@@ -1,45 +1,30 @@
 # HDT_Reconnector
 
-Плагин для [Hearthstone Deck Tracker](https://github.com/HearthSim/Hearthstone-Deck-Tracker): кнопка **reconnect** в матче **полей сражений** (Battlegrounds) для пропуска боя через кратковременный разрыв TCP-соединения.
+[Русская версия](README.ru.md)
 
-## Требования
+Reconnect button for **Battlegrounds** matches in [Hearthstone Deck Tracker](https://github.com/HearthSim/Hearthstone-Deck-Tracker). Use it to skip combat by briefly dropping the game connection.
+
+## Requirements
 
 - Windows
-- Hearthstone Deck Tracker (актуальная версия)
-- **HDT запущен от имени администратора** (нужно для `SetTcpEntry`)
+- Hearthstone Deck Tracker (recent version)
+- **Run HDT as administrator** (required for reconnect to work)
 
-## Установка
+## Install
 
-1. Скачай `HDT_Reconnector.dll` из [последнего релиза](https://github.com/qxplays/HDT_Reconnector/releases).
-2. Положи файл в папку плагинов HDT:  
+1. Download `HDT_Reconnector.dll` from the [latest release](https://github.com/qxplays/HDT_Reconnector/releases).
+2. Copy it to your HDT plugins folder:  
    `%AppData%\HearthstoneDeckTracker\Plugins\`  
-   (в HDT: **Options → Tracker → Plugins → Plugins folder**).
-3. Перезапусти HDT **от администратора**.
-4. **Options → Tracker → Plugins** → включи **BGMatchHelper**.
-5. Меню **Plugins** → включи **BG Match Helper**.
+   (in HDT: **Options → Tracker → Plugins → Plugins folder**).
+3. Restart HDT **as administrator**.
+4. Enable **BGMatchHelper** under **Options → Tracker → Plugins**.
+5. In the **Plugins** menu, turn on **BG Match Helper**.
 
-В матче BG в правом нижнем углу оверлея (со смещением влево и вверх) появится кнопка **reconnect**.
+## Use
 
-Переместить кнопку: **Options → Overlay → General → Unlock Overlay**.
+1. Start a **Battlegrounds** match.
+2. A **reconnect** button appears on the overlay (bottom-right area).
+3. Click it during combat to disconnect and let the client reconnect (skips the fight).
+4. If HDT was not started as admin, the button shows **(need admin rights)** — close HDT, run it as administrator, and try again.
 
-## Сборка из исходников
-
-```powershell
-dotnet build HDT_Reconnector.sln -c Release
-```
-
-Нужна установленная HDT в `%LOCALAPPDATA%\HearthstoneDeckTracker`, либо:
-
-```powershell
-dotnet build /p:HdtExe="C:\path\to\HearthstoneDeckTracker.exe"
-```
-
-Готовый DLL: `HDT_Reconnector\bin\Release\HDT_Reconnector.dll`
-
-## Примечание
-
-Имя плагина в HDT — **BGMatchHelper** (не «Reconnector»): официальный HDT блокирует плагины с именами вроде Reconnector и статический импорт `iphlpapi`.
-
-## Лицензия
-
-MIT
+To move the button: **Options → Overlay → General → Unlock Overlay**, then drag it.

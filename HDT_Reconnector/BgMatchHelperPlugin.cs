@@ -6,9 +6,6 @@ using Hearthstone_Deck_Tracker.Utility.Logging;
 
 namespace HDT_Reconnector
 {
-    /// <summary>
-    /// Battlegrounds overlay helper. Plugin name intentionally avoids HDT blocklist.
-    /// </summary>
     public class BgMatchHelperPlugin : IPlugin
     {
         private MenuItem _menuItem;
@@ -23,7 +20,7 @@ namespace HDT_Reconnector
 
         public string Author => "thorx";
 
-        public Version Version => new Version(1, 0, 0);
+        public Version Version => new Version(1, 0, 1);
 
         public MenuItem MenuItem => _menuItem;
 
@@ -60,13 +57,6 @@ namespace HDT_Reconnector
 
         private void OnMenuChecked(object sender, EventArgs e)
         {
-            if (!Utils.IsElevated())
-            {
-                Log.Warn("BGMatchHelper requires HDT to run as administrator.");
-                _menuItem.IsChecked = false;
-                return;
-            }
-
             if (_overlay != null)
                 return;
 

@@ -19,12 +19,7 @@ jobs:
         with:
           files: releases/HDT_Reconnector.dll
           body: |
-            ## Установка
-
-            1. Скачай **HDT_Reconnector.dll** ниже.
-            2. Положи в `%AppData%\HearthstoneDeckTracker\Plugins\`
-            3. Запусти HDT **от имени администратора**.
-            4. Включи плагин **BGMatchHelper** (Options → Tracker → Plugins).
-            5. Меню **Plugins** → **BG Match Helper**.
+            See [README](https://github.com/qxplays/HDT_Reconnector#install) for install steps.
+            [Русская инструкция](README.ru.md)
 
           generate_release_notes: true

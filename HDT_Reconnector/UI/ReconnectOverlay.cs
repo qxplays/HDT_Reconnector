@@ -24,6 +24,11 @@ namespace HDT_Reconnector
         private const double EdgeMargin = 16;
         private const double OffsetLeft = 100;
         private const double OffsetTop = 100;
+        private const string TextReconnect = "reconnect";
+        private const string TextDisconnected = "disconnected";
+        private const string TextNeedAdmin = "(need admin rights)";
+        private const double WidthNormal = 130;
+        private const double WidthAdminHint = 200;
 
         private readonly ConnectionBreaker _breaker = new ConnectionBreaker();
         private readonly Border _reconnectButton;
@@ -41,12 +46,12 @@ namespace HDT_Reconnector
 
         public ReconnectOverlay()
         {
-            Width = 130;
+            Width = WidthNormal;
             Height = 36;
 
             _reconnectText = new TextBlock
             {
-                Text = "reconnect",
+                Text = TextReconnect,
                 Foreground = Brushes.White,
                 FontWeight = FontWeights.Bold,
                 FontSize = 14,
@@ -109,7 +114,10 @@ namespace HDT_Reconnector
 
             Visibility = showInBgMatch ? Visibility.Visible : Visibility.Collapsed;
             if (showInBgMatch)
+            {
                 UpdatePosition();
+                UpdateAdminState();
+            }
 
             if (_breaker.Status == ConnectionBreaker.ConnectionStatus.Disconnected)
             {
@@ -117,13 +125,13 @@ namespace HDT_Reconnector
                 {
                     Log.Info("Can't reconnect to the game");
                     _breaker.MarkConnected();
-                    SetButtonText("reconnect");
+                    UpdateAdminState();
                     return;
                 }
 
                 if (IsGameRestarted() || IsGameEnded())
                 {
-                    SetButtonText("reconnect");
+                    UpdateAdminState();
                     _breaker.MarkConnected();
                     _disconnectTimer.Change(Timeout.Infinite, Timeout.Infinite);
                 }
@@ -154,7 +162,7 @@ namespace HDT_Reconnector
 
         private void ReconnectButton_Click(object sender, MouseButtonEventArgs e)
         {
-            if (!CanReconnect())
+            if (!Utils.IsElevated() || !CanReconnect())
                 return;
 
             _disconnectTimer.Change(DisconnectTimeoutSeconds * 1000, Timeout.Infinite);
@@ -163,7 +171,7 @@ namespace HDT_Reconnector
             lock (this)
             {
                 if (_breaker.Disconnect(RemoteAddr, RemotePort) == 0)
-                    SetButtonText("disconnected");
+                    SetButtonText(TextDisconnected);
                 else
                     _disconnectTimer.Change(Timeout.Infinite, Timeout.Infinite);
             }
@@ -182,6 +190,9 @@ namespace HDT_Reconnector
 
         private bool CanReconnect()
         {
+            if (!Utils.IsElevated())
+                return false;
+
             var game = Core.Game;
             return _breaker.Status == ConnectionBreaker.ConnectionStatus.Connected
                    && game != null
@@ -189,6 +200,27 @@ namespace HDT_Reconnector
                    && game.IsRunning
                    && !game.IsInMenu
                    && !IsGameEnded();
+        }
+
+        private void UpdateAdminState()
+        {
+            if (!Utils.IsElevated())
+            {
+                Width = WidthAdminHint;
+                _reconnectText.FontSize = 11;
+                SetButtonText(TextNeedAdmin);
+                _reconnectButton.Cursor = Cursors.Arrow;
+                _reconnectButton.Opacity = 0.85;
+                return;
+            }
+
+            Width = WidthNormal;
+            _reconnectText.FontSize = 14;
+            _reconnectButton.Cursor = Cursors.Hand;
+            _reconnectButton.Opacity = 1;
+
+            if (_breaker.Status == ConnectionBreaker.ConnectionStatus.Connected)
+                SetButtonText(TextReconnect);
         }
 
         private bool IsGameRestarted()
@@ -214,7 +246,7 @@ namespace HDT_Reconnector
 
         private void DisconnectedTimeout(object state)
         {
-            Dispatcher.Invoke(() => SetButtonText("reconnect"));
+            Dispatcher.Invoke(UpdateAdminState);
             _breaker.MarkConnected();
         }
 
