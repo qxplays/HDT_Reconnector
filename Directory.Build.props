@@ -1,0 +1,5 @@
+<Project>
+  <PropertyGroup>
+    <HdtInstallRoot Condition="'$(HdtInstallRoot)' == ''">$(LOCALAPPDATA)\HearthstoneDeckTracker</HdtInstallRoot>
+  </PropertyGroup>
+</Project>

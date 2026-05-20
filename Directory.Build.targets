@@ -1,0 +1,29 @@
+<Project>
+  <Target Name="ResolveHdtExe" BeforeTargets="ResolveAssemblyReferences">
+    <PropertyGroup Condition="'$(HdtExe)' == ''">
+      <_HdtExeOutFile>$(MSBuildProjectDirectory)\obj\hdtexe.path.txt</_HdtExeOutFile>
+    </PropertyGroup>
+    <MakeDir Directories="$(MSBuildProjectDirectory)\obj" Condition="'$(HdtExe)' == '' and !Exists('$(MSBuildProjectDirectory)\obj')"/>
+    <Exec Condition="'$(HdtExe)' == '' and Exists('$(HdtInstallRoot)')"
+          Command="powershell -NoProfile -Command &quot;$root='$(HdtInstallRoot)'; $p=Get-ChildItem -Path $root -Recurse -Filter HearthstoneDeckTracker.exe -EA 0 | Where-Object { $_.FullName -match '\\app-' } | Sort-Object FullName | Select-Object -Last 1 -ExpandProperty FullName; if(-not $p){$p=Join-Path $root 'HearthstoneDeckTracker.exe'}; if($p -and (Test-Path $p)){Set-Content -Path '$(_HdtExeOutFile)' -Value $p -NoNewline}&quot;"
+          IgnoreExitCode="false"/>
+    <ReadLinesFromFile Condition="'$(HdtExe)' == '' and Exists('$(_HdtExeOutFile)')"
+                       File="$(_HdtExeOutFile)">
+      <Output TaskParameter="Lines" ItemName="_HdtExeLine"/>
+    </ReadLinesFromFile>
+    <PropertyGroup Condition="'$(HdtExe)' == '' and '@(_HdtExeLine)' != ''">
+      <HdtExe>@(_HdtExeLine)</HdtExe>
+    </PropertyGroup>
+    <Error Condition="'$(HdtExe)' == ''"
+           Text="Hearthstone Deck Tracker not found under $(HdtInstallRoot). Install HDT or pass /p:HdtExe=..."/>
+  </Target>
+
+  <Target Name="AddHdtReference" BeforeTargets="ResolveAssemblyReferences" DependsOnTargets="ResolveHdtExe">
+    <ItemGroup>
+      <Reference Include="HearthstoneDeckTracker">
+        <HintPath>$(HdtExe)</HintPath>
+        <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+  </Target>
+</Project>
