@@ -1,0 +1,98 @@
+﻿[
+    {
+        "trinket_dbf_id":  120001,
+        "name":  "Lesser1",
+        "avg_placement":  3.58,
+        "pick_rate":  0.12,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  120002,
+        "name":  "Lesser2",
+        "avg_placement":  3.66,
+        "pick_rate":  0.12,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  120003,
+        "name":  "Lesser3",
+        "avg_placement":  3.74,
+        "pick_rate":  0.12,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  120004,
+        "name":  "Lesser4",
+        "avg_placement":  3.82,
+        "pick_rate":  0.12,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  120005,
+        "name":  "Lesser5",
+        "avg_placement":  3.9,
+        "pick_rate":  0.12,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  120006,
+        "name":  "Lesser6",
+        "avg_placement":  3.98,
+        "pick_rate":  0.12,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  120007,
+        "name":  "Lesser7",
+        "avg_placement":  4.06,
+        "pick_rate":  0.12,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "trinket_dbf_id":  120008,
+        "name":  "Lesser8",
+        "avg_placement":  4.14,
+        "pick_rate":  0.12,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "trinket_dbf_id":  120009,
+        "name":  "Lesser9",
+        "avg_placement":  4.22,
+        "pick_rate":  0.12,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "trinket_dbf_id":  120010,
+        "name":  "Lesser10",
+        "avg_placement":  4.3,
+        "pick_rate":  0.12,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "trinket_dbf_id":  120011,
+        "name":  "Lesser11",
+        "avg_placement":  4.38,
+        "pick_rate":  0.12,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "trinket_dbf_id":  120012,
+        "name":  "Lesser12",
+        "avg_placement":  4.46,
+        "pick_rate":  0.12,
+        "tier":  2,
+        "tier_label":  "A"
+    }
+]

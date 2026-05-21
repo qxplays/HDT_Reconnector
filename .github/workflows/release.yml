@@ -17,9 +17,17 @@ jobs:
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: releases/HDT_Reconnector.dll
+          files: |
+            releases/HDT_Reconnector.dll
+            releases/HDT_BgPickAdvisor.dll
+            releases/meta-api.url.example
           body: |
             See [README](https://github.com/qxplays/HDT_Reconnector#install) for install steps.
             [Русская инструкция](README.ru.md)
+
+            **Plugins**
+            - `HDT_Reconnector.dll` — BG Match Helper (reconnect)
+            - `HDT_BgPickAdvisor.dll` — hero/trinket pick overlay (meta from http://hsbg.qxplays.ru)
+            - `meta-api.url.example` — optional API URL override
 
           generate_release_notes: true

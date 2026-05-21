@@ -19,9 +19,20 @@
   </Target>
 
   <Target Name="AddHdtReference" BeforeTargets="ResolveAssemblyReferences" DependsOnTargets="ResolveHdtExe">
+    <PropertyGroup>
+      <HdtDir>$([System.IO.Path]::GetDirectoryName('$(HdtExe)'))</HdtDir>
+    </PropertyGroup>
     <ItemGroup>
       <Reference Include="HearthstoneDeckTracker">
         <HintPath>$(HdtExe)</HintPath>
+        <Private>False</Private>
+      </Reference>
+      <Reference Include="HearthDb" Condition="Exists('$(HdtDir)\HearthDb.dll')">
+        <HintPath>$(HdtDir)\HearthDb.dll</HintPath>
+        <Private>False</Private>
+      </Reference>
+      <Reference Include="Newtonsoft.Json" Condition="Exists('$(HdtDir)\Newtonsoft.Json.dll')">
+        <HintPath>$(HdtDir)\Newtonsoft.Json.dll</HintPath>
         <Private>False</Private>
       </Reference>
     </ItemGroup>

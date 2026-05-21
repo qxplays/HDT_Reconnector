@@ -1,0 +1,20 @@
+[
+  {
+    "hero_dbf_id": 57946,
+    "pick_rate": 18.08,
+    "avg_final_placement": 3.625,
+    "tier_v2": "s"
+  },
+  {
+    "hero_dbf_id": 129173,
+    "pick_rate": 82.61,
+    "avg_final_placement": 3.845,
+    "tier_v2": "a"
+  },
+  {
+    "hero_dbf_id": 103500,
+    "pick_rate": 3.94,
+    "avg_final_placement": 4.651,
+    "tier_v2": "d"
+  }
+]

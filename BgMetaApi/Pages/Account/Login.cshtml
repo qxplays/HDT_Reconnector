@@ -1,0 +1,26 @@
+@page "/Account/Login"
+@model BgMetaApi.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_Layout";
+}
+
+<div class="login-wrap card">
+    <h1>Sign in</h1>
+    <p class="subtitle">BG Meta API administration</p>
+
+    @if (!string.IsNullOrEmpty(Model.Error))
+    {
+        <div class="alert alert-error">@Model.Error</div>
+    }
+
+    <form method="post">
+        <label>Username</label>
+        <input type="text" name="username" autocomplete="username" required/>
+
+        <label>Password</label>
+        <input type="password" name="password" autocomplete="current-password" required/>
+
+        <button type="submit" class="btn">Login</button>
+    </form>
+</div>

@@ -1,0 +1,73 @@
+@page "/Admin"
+@model BgMetaApi.Pages.Admin.IndexModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h1>BG Meta Admin</h1>
+<p class="subtitle">Upload HSReplay-style JSON dumps for the HDT BgPickAdvisor plugin.</p>
+
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="alert alert-success">@Model.Message</div>
+}
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-error">@Model.Error</div>
+}
+
+<div class="grid">
+    <div class="card">
+        <h2>heroes.json</h2>
+        <div class="stat">
+            <div class="stat-label">Status</div>
+            <div class="stat-value @(Model.Heroes.Exists ? "stat-ok" : "stat-miss")">
+                @(Model.Heroes.Exists ? "Ready" : "Missing")
+            </div>
+        </div>
+        @if (Model.Heroes.Exists)
+        {
+            <p class="subtitle" style="margin-top:12px">
+                @Model.Heroes.SizeBytes bytes · @Model.Heroes.UpdatedUtc?.ToString("u")
+            </p>
+        }
+        <form method="post" enctype="multipart/form-data" asp-page-handler="UploadHeroes">
+            <label>Upload file</label>
+            <input type="file" name="file" accept=".json,application/json" required/>
+            <button type="submit" class="btn">Upload heroes</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>trinkets.json</h2>
+        <div class="stat">
+            <div class="stat-label">Status</div>
+            <div class="stat-value @(Model.Trinkets.Exists ? "stat-ok" : "stat-miss")">
+                @(Model.Trinkets.Exists ? "Ready" : "Missing")
+            </div>
+        </div>
+        @if (Model.Trinkets.Exists)
+        {
+            <p class="subtitle" style="margin-top:12px">
+                @Model.Trinkets.SizeBytes bytes · @Model.Trinkets.UpdatedUtc?.ToString("u")
+            </p>
+        }
+        <form method="post" enctype="multipart/form-data" asp-page-handler="UploadTrinkets">
+            <label>Upload file</label>
+            <input type="file" name="file" accept=".json,application/json" required/>
+            <button type="submit" class="btn">Upload trinkets</button>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <h2>Plugin download URLs (public)</h2>
+    <ul class="api-list">
+        <li>GET @Model.PublicBaseUrl/api/meta/heroes</li>
+        <li>GET @Model.PublicBaseUrl/api/meta/trinkets</li>
+        <li>GET @Model.PublicBaseUrl/api/meta/status</li>
+    </ul>
+    <p class="subtitle" style="margin-top:16px">
+        Data folder: <code>@Model.DataDirectory</code>
+    </p>
+</div>

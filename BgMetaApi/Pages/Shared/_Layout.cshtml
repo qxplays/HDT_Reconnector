@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>@ViewData["Title"] — BG Meta API</title>
+    <link rel="stylesheet" href="~/css/admin.css"/>
+</head>
+<body>
+<header class="topbar">
+    <div class="brand">
+        <span class="brand-mark">BG</span>
+        <span>Meta API</span>
+    </div>
+    @if (User.Identity?.IsAuthenticated == true)
+    {
+        <nav>
+            <a href="/Admin">Dashboard</a>
+            <form method="post" action="/Account/Logout" class="inline">
+                <button type="submit" class="link-btn">Logout (@User.Identity.Name)</button>
+            </form>
+        </nav>
+    }
+</header>
+<main class="container">
+    @RenderBody()
+</main>
+</body>
+</html>

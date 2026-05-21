@@ -1,0 +1,322 @@
+﻿[
+    {
+        "hero_dbf_id":  60001,
+        "name":  "Hero1",
+        "avg_placement":  3.25,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60002,
+        "name":  "Hero2",
+        "avg_placement":  3.3,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60003,
+        "name":  "Hero3",
+        "avg_placement":  3.35,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60004,
+        "name":  "Hero4",
+        "avg_placement":  3.4,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60005,
+        "name":  "Hero5",
+        "avg_placement":  3.45,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60006,
+        "name":  "Hero6",
+        "avg_placement":  3.5,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60007,
+        "name":  "Hero7",
+        "avg_placement":  3.55,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60008,
+        "name":  "Hero8",
+        "avg_placement":  3.6,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60009,
+        "name":  "Hero9",
+        "avg_placement":  3.65,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60010,
+        "name":  "Hero10",
+        "avg_placement":  3.7,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60011,
+        "name":  "Hero11",
+        "avg_placement":  3.75,
+        "pick_rate":  0.1,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "hero_dbf_id":  60012,
+        "name":  "Hero12",
+        "avg_placement":  3.8,
+        "pick_rate":  0.1,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "hero_dbf_id":  60013,
+        "name":  "Hero13",
+        "avg_placement":  3.85,
+        "pick_rate":  0.1,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "hero_dbf_id":  60014,
+        "name":  "Hero14",
+        "avg_placement":  3.9,
+        "pick_rate":  0.1,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "hero_dbf_id":  60015,
+        "name":  "Hero15",
+        "avg_placement":  3.95,
+        "pick_rate":  0.1,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "hero_dbf_id":  60016,
+        "name":  "Hero16",
+        "avg_placement":  4,
+        "pick_rate":  0.1,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "hero_dbf_id":  60017,
+        "name":  "Hero17",
+        "avg_placement":  4.05,
+        "pick_rate":  0.1,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "hero_dbf_id":  60018,
+        "name":  "Hero18",
+        "avg_placement":  4.1,
+        "pick_rate":  0.1,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "hero_dbf_id":  60019,
+        "name":  "Hero19",
+        "avg_placement":  4.15,
+        "pick_rate":  0.1,
+        "tier":  2,
+        "tier_label":  "A"
+    },
+    {
+        "hero_dbf_id":  60020,
+        "name":  "Hero20",
+        "avg_placement":  4.2,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60021,
+        "name":  "Hero21",
+        "avg_placement":  4.25,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60022,
+        "name":  "Hero22",
+        "avg_placement":  4.3,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60023,
+        "name":  "Hero23",
+        "avg_placement":  4.35,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60024,
+        "name":  "Hero24",
+        "avg_placement":  4.4,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60025,
+        "name":  "Hero25",
+        "avg_placement":  4.45,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60026,
+        "name":  "Hero26",
+        "avg_placement":  4.5,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60027,
+        "name":  "Hero27",
+        "avg_placement":  4.55,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60028,
+        "name":  "Hero28",
+        "avg_placement":  4.6,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60029,
+        "name":  "Hero29",
+        "avg_placement":  4.65,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60030,
+        "name":  "Hero30",
+        "avg_placement":  4.7,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60031,
+        "name":  "Hero31",
+        "avg_placement":  4.75,
+        "pick_rate":  0.1,
+        "tier":  3,
+        "tier_label":  "B"
+    },
+    {
+        "hero_dbf_id":  60032,
+        "name":  "Hero32",
+        "avg_placement":  4.8,
+        "pick_rate":  0.1,
+        "tier":  4,
+        "tier_label":  "C"
+    },
+    {
+        "hero_dbf_id":  60033,
+        "name":  "Hero33",
+        "avg_placement":  4.85,
+        "pick_rate":  0.1,
+        "tier":  4,
+        "tier_label":  "C"
+    },
+    {
+        "hero_dbf_id":  60034,
+        "name":  "Hero34",
+        "avg_placement":  4.9,
+        "pick_rate":  0.1,
+        "tier":  4,
+        "tier_label":  "C"
+    },
+    {
+        "hero_dbf_id":  60035,
+        "name":  "Hero35",
+        "avg_placement":  4.95,
+        "pick_rate":  0.1,
+        "tier":  4,
+        "tier_label":  "C"
+    },
+    {
+        "hero_dbf_id":  60036,
+        "name":  "Hero36",
+        "avg_placement":  5,
+        "pick_rate":  0.1,
+        "tier":  4,
+        "tier_label":  "C"
+    },
+    {
+        "hero_dbf_id":  60037,
+        "name":  "Hero37",
+        "avg_placement":  5.05,
+        "pick_rate":  0.1,
+        "tier":  4,
+        "tier_label":  "C"
+    },
+    {
+        "hero_dbf_id":  60038,
+        "name":  "Hero38",
+        "avg_placement":  5.1,
+        "pick_rate":  0.1,
+        "tier":  4,
+        "tier_label":  "C"
+    },
+    {
+        "hero_dbf_id":  60039,
+        "name":  "Hero39",
+        "avg_placement":  5.15,
+        "pick_rate":  0.1,
+        "tier":  4,
+        "tier_label":  "C"
+    },
+    {
+        "hero_dbf_id":  60040,
+        "name":  "Hero40",
+        "avg_placement":  5.2,
+        "pick_rate":  0.1,
+        "tier":  4,
+        "tier_label":  "C"
+    }
+]

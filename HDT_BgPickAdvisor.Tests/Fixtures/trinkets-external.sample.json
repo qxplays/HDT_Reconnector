@@ -1,0 +1,16 @@
+[
+  {
+    "trinket_dbf_id": 130886,
+    "pick_rate": 56.93,
+    "avg_final_placement": 3.807,
+    "tier": "s",
+    "group": "lesser"
+  },
+  {
+    "trinket_dbf_id": 117797,
+    "pick_rate": 13.3,
+    "avg_final_placement": 3.359,
+    "tier": "s",
+    "group": "greater"
+  }
+]

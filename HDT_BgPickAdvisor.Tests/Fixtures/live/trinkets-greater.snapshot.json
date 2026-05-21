@@ -1,0 +1,66 @@
+﻿[
+    {
+        "trinket_dbf_id":  130001,
+        "name":  "Greater1",
+        "avg_placement":  3.7,
+        "pick_rate":  0.09,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  130002,
+        "name":  "Greater2",
+        "avg_placement":  3.8,
+        "pick_rate":  0.09,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  130003,
+        "name":  "Greater3",
+        "avg_placement":  3.9,
+        "pick_rate":  0.09,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  130004,
+        "name":  "Greater4",
+        "avg_placement":  4,
+        "pick_rate":  0.09,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  130005,
+        "name":  "Greater5",
+        "avg_placement":  4.1,
+        "pick_rate":  0.09,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  130006,
+        "name":  "Greater6",
+        "avg_placement":  4.2,
+        "pick_rate":  0.09,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  130007,
+        "name":  "Greater7",
+        "avg_placement":  4.3,
+        "pick_rate":  0.09,
+        "tier":  1,
+        "tier_label":  "S"
+    },
+    {
+        "trinket_dbf_id":  130008,
+        "name":  "Greater8",
+        "avg_placement":  4.4,
+        "pick_rate":  0.09,
+        "tier":  1,
+        "tier_label":  "S"
+    }
+]

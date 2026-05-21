@@ -1,0 +1,26 @@
+[
+  {
+    "hero_dbf_id": 60361,
+    "name": "Patchwerk",
+    "avg_placement": 3.82,
+    "pick_rate": 0.11,
+    "tier": 1,
+    "tier_label": "S"
+  },
+  {
+    "hero_dbf_id": 60216,
+    "name": "Millhouse Manastorm",
+    "avg_placement": 4.95,
+    "pick_rate": 0.08,
+    "tier": 4,
+    "tier_label": "C"
+  },
+  {
+    "hero_dbf_id": 60070,
+    "name": "C'Thun",
+    "avg_placement": 4.21,
+    "pick_rate": 0.09,
+    "tier": 2,
+    "tier_label": "A"
+  }
+]

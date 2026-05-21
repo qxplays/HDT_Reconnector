@@ -1,0 +1,10 @@
+**/.git
+**/.idea
+**/bin
+**/obj
+**/.vs
+**/agent-tools
+**/agent-transcripts
+HDT_BgPickAdvisor.Tests
+tools
+releases

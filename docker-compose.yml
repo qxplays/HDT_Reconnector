@@ -1,0 +1,19 @@
+services:
+  bgmetaapi:
+    build:
+      context: .
+      dockerfile: BgMetaApi/Dockerfile
+    container_name: bgmetaapi
+    ports:
+      - "80:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      META_ADMIN_USERNAME: ${META_ADMIN_USERNAME:-admin}
+      META_ADMIN_PASSWORD: ${META_ADMIN_PASSWORD}
+      META_DATA_DIR: /data
+    volumes:
+      - bgmeta-data:/data
+    restart: unless-stopped
+
+volumes:
+  bgmeta-data:
