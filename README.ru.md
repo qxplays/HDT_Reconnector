@@ -101,8 +101,19 @@ dotnet msbuild HDT_Reconnector.sln /p:Configuration=Release
 
 Результат: `HDT_Reconnector\bin\Release\HDT_Reconnector.dll` и `HDT_BgPickAdvisor\bin\Release\HDT_BgPickAdvisor.dll`.
 
-### Тесты меты (без игры)
+### Тесты (без игры)
+
+Юнит-тесты (фикстуры JSON):
 
 ```text
-dotnet test HDT_BgPickAdvisor.Tests\HDT_BgPickAdvisor.Tests.csproj
+dotnet test HDT_BgPickAdvisor.Tests\HDT_BgPickAdvisor.Tests.csproj --filter "Category!=Integration"
 ```
+
+Интеграция с живым API (`http://hsbg.qxplays.ru` по умолчанию):
+
+```text
+dotnet test HDT_BgPickAdvisor.Tests\HDT_BgPickAdvisor.Tests.csproj --filter "Category=Integration"
+```
+
+Другой сервер: `set BGMETA_API_URL=http://127.0.0.1:5080`  
+Без сети / в CI: `set BGPICKADVISOR_SKIP_LIVE_API=1`

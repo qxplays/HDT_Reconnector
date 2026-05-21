@@ -76,8 +76,18 @@ dotnet msbuild HDT_Reconnector.sln /p:Configuration=Release
 
 Output: `HDT_Reconnector\bin\Release\HDT_Reconnector.dll` and `HDT_BgPickAdvisor\bin\Release\HDT_BgPickAdvisor.dll`.
 
-### Test meta parsing (no game required)
+### Tests (no game required)
+
+Unit tests (JSON fixtures):
 
 ```text
-dotnet test HDT_BgPickAdvisor.Tests\HDT_BgPickAdvisor.Tests.csproj
+dotnet test HDT_BgPickAdvisor.Tests\HDT_BgPickAdvisor.Tests.csproj --filter "Category!=Integration"
 ```
+
+Live API integration (default `http://hsbg.qxplays.ru`):
+
+```text
+dotnet test HDT_BgPickAdvisor.Tests\HDT_BgPickAdvisor.Tests.csproj --filter "Category=Integration"
+```
+
+Override URL: `BGMETA_API_URL` · Skip network: `BGPICKADVISOR_SKIP_LIVE_API=1`
