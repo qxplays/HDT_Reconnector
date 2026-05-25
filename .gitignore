@@ -6,4 +6,6 @@ obj/
 *.cache
 hdtexe.path.txt
 *.dll
-!releases/*.dll
+releases/*
+!releases/meta-api.url.example
+!releases/INSTALL.*.txt

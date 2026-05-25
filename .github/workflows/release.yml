@@ -10,24 +10,37 @@ permissions:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Package plugin ZIPs
+        shell: pwsh
+        run: ./scripts/Package-Release.ps1
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            releases/HDT_Reconnector.dll
-            releases/HDT_BgPickAdvisor.dll
+            releases/HDT_Reconnector.zip
+            releases/HDT_BgPickAdvisor.zip
             releases/meta-api.url.example
           body: |
             See [README](https://github.com/qxplays/HDT_Reconnector#install) for install steps.
             [Русская инструкция](README.ru.md)
 
-            **Plugins**
-            - `HDT_Reconnector.dll` — BG Match Helper (reconnect)
-            - `HDT_BgPickAdvisor.dll` — hero/trinket pick overlay (meta from http://hsbg.qxplays.ru)
-            - `meta-api.url.example` — optional API URL override
+            **Downloads (ZIP — unpack, then copy DLL to HDT Plugins folder)**
+
+            | Archive | Plugin |
+            |---------|--------|
+            | `HDT_Reconnector.zip` | BG Match Helper (reconnect, run HDT as admin) |
+            | `HDT_BgPickAdvisor.zip` | Hero/trinket pick overlay (meta: http://hsbg.qxplays.ru) |
+
+            `meta-api.url.example` — optional API URL override (also inside BgPickAdvisor zip).
+
+            > **BgReplay** is not included yet (work in progress).
 
           generate_release_notes: true

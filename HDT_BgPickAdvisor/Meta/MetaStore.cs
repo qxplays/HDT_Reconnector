@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using HearthDb;
 using HDT_BgPickAdvisor.Detection;
 using HDT_BgPickAdvisor.Logging;
 using HDT_BgPickAdvisor.Models;
@@ -66,6 +67,24 @@ namespace HDT_BgPickAdvisor.Meta
             if (resolved > 0 && resolved != dbfId && _heroesByDbf.TryGetValue(resolved, out byDbf))
                 return byDbf;
 
+            if (!string.IsNullOrEmpty(cardId))
+            {
+                var baseId = HeroDbfResolver.GetBaseHeroCardId(cardId);
+                if (!string.IsNullOrEmpty(baseId) && !string.Equals(baseId, cardId, StringComparison.Ordinal))
+                {
+                    try
+                    {
+                        if (Cards.All.TryGetValue(baseId, out var baseCard) && baseCard.DbfId > 0 &&
+                            _heroesByDbf.TryGetValue(baseCard.DbfId, out byDbf))
+                            return byDbf;
+                    }
+                    catch
+                    {
+                        // HearthDb not available
+                    }
+                }
+            }
+
             return null;
         }
 
@@ -93,8 +112,10 @@ namespace HDT_BgPickAdvisor.Meta
             }
 
             var best = offers
-                .OrderBy(o => o.Meta?.Rank ?? int.MaxValue)
+                .OrderBy(o => o.Meta == null ? 1 : 0)
+                .ThenBy(o => o.Meta?.Rank ?? int.MaxValue)
                 .ThenBy(o => o.Meta?.AvgPlacement ?? double.MaxValue)
+                .ThenByDescending(o => o.Meta?.PickRate ?? 0)
                 .FirstOrDefault();
             if (best != null)
                 best.IsBestPick = true;

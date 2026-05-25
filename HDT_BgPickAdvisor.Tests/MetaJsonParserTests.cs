@@ -34,6 +34,19 @@ namespace HDT_BgPickAdvisor.Tests
         }
 
         [Fact]
+        public void ParseHeroes_includes_pick_rate_only_rows()
+        {
+            var json = @"[{ ""hero_dbf_id"": 74646, ""pick_rate"": 6.19, ""tier_v2"": """" }]";
+            var heroes = MetaJsonParser.ParseHeroes(json);
+
+            Assert.Single(heroes);
+            Assert.Equal(74646, heroes[0].DbfId);
+            Assert.Null(heroes[0].AvgPlacement);
+            Assert.Equal(6.19, heroes[0].PickRate);
+            Assert.Equal("D", heroes[0].Tier);
+        }
+
+        [Fact]
         public void ParseRows_rejects_html_and_invalid()
         {
             Assert.Empty(MetaJsonParser.ParseHeroes("<!DOCTYPE html>"));

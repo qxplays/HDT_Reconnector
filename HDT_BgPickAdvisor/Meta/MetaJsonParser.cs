@@ -15,8 +15,10 @@ namespace HDT_BgPickAdvisor.Meta
         {
             var rank = 1;
             return ParseRows(json)
-                .Where(r => r.DbfId > 0 && r.AvgPlacement.HasValue)
-                .OrderBy(r => r.AvgPlacement ?? double.MaxValue)
+                .Where(r => r.DbfId > 0 && (r.AvgPlacement.HasValue || r.PickRate.HasValue))
+                .OrderByDescending(r => r.AvgPlacement.HasValue)
+                .ThenBy(r => r.AvgPlacement ?? double.MaxValue)
+                .ThenByDescending(r => r.PickRate ?? 0)
                 .Select(r => new HeroMeta
                 {
                     DbfId = r.DbfId,
@@ -121,7 +123,10 @@ namespace HDT_BgPickAdvisor.Meta
             new MetaRow
             {
                 DbfId = ReadInt(dict, "hero_dbf_id", "trinket_dbf_id"),
-                AvgPlacement = ReadDouble(dict, "avg_final_placement", "avg_placement"),
+                AvgPlacement = ReadDouble(dict,
+                    "avg_final_placement",
+                    "avg_placement",
+                    "adjusted_avg_final_placement"),
                 PickRate = ReadDouble(dict, "pick_rate", "pickRate"),
                 Tier = ReadTier(dict),
                 Pool = ParsePool(ReadString(dict, "group"))
@@ -158,10 +163,7 @@ namespace HDT_BgPickAdvisor.Meta
         {
             if (!string.IsNullOrWhiteSpace(tier))
                 return tier;
-            if (rank <= 10) return "S";
-            if (rank <= 25) return "A";
-            if (rank <= 45) return "B";
-            return "C";
+            return MetaDefaults.DefaultTier;
         }
 
         private static int ReadInt(Dictionary<string, object> dict, params string[] keys)

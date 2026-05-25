@@ -4,10 +4,12 @@
 
 Two HDT plugins in one repository for **Battlegrounds**:
 
-| Plugin | DLL | Purpose |
-|--------|-----|---------|
-| **BGMatchHelper** | `HDT_Reconnector.dll` | Reconnect button to skip combat (needs admin) |
-| **BgPickAdvisor** | `HDT_BgPickAdvisor.dll` | Hero/trinket pick hints from BgMetaApi JSON meta |
+| Plugin | Release | Purpose |
+|--------|---------|---------|
+| **BGMatchHelper** | `HDT_Reconnector.zip` | Reconnect button to skip combat (needs admin) |
+| **BgPickAdvisor** | `HDT_BgPickAdvisor.zip` | Hero/trinket pick hints from BgMetaApi JSON meta |
+
+> Downloads are **ZIP archives** (browsers flag raw `.dll` files). Unpack and copy the DLL into the HDT plugins folder.
 
 ---
 
@@ -23,8 +25,8 @@ Reconnect button for **Battlegrounds** matches in [Hearthstone Deck Tracker](htt
 
 ### Install
 
-1. Download `HDT_Reconnector.dll` from the [latest release](https://github.com/qxplays/HDT_Reconnector/releases).
-2. Copy it to your HDT plugins folder:  
+1. Download `HDT_Reconnector.zip` from the [latest release](https://github.com/qxplays/HDT_Reconnector/releases) and unzip it.
+2. Copy `HDT_Reconnector.dll` to your HDT plugins folder:  
    `%AppData%\HearthstoneDeckTracker\Plugins\`  
    (in HDT: **Options → Tracker → Plugins → Plugins folder**).
 3. Restart HDT **as administrator**.
@@ -54,8 +56,8 @@ Shows tier badges and highlights the best hero or trinket during Battlegrounds p
 
 ### Install
 
-1. Download `HDT_BgPickAdvisor.dll` from the [latest release](https://github.com/qxplays/HDT_Reconnector/releases).
-2. Copy it to `%AppData%\HearthstoneDeckTracker\Plugins\`.
+1. Download `HDT_BgPickAdvisor.zip` from the [latest release](https://github.com/qxplays/HDT_Reconnector/releases) and unzip it.
+2. Copy `HDT_BgPickAdvisor.dll` to `%AppData%\HearthstoneDeckTracker\Plugins\`.
 3. Restart HDT.
 4. Enable **BgPickAdvisor** under **Options → Tracker → Plugins**.
 5. In the **Plugins** menu, turn on **BG Pick Advisor**.

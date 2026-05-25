@@ -4,11 +4,15 @@
 
 Два плагина HDT для **полей сражений** в одном репозитории:
 
-| Плагин | DLL | Назначение |
-|--------|-----|------------|
-| **BGMatchHelper** | `HDT_Reconnector.dll` | Кнопка reconnect для пропуска боя (нужен админ) |
-| **BgPickAdvisor** | `HDT_BgPickAdvisor.dll` | Подсказки на выборе героя/аксессуара по мете с **BgMetaApi** |
+| Плагин | Релиз | Назначение |
+|--------|-------|------------|
+| **BGMatchHelper** | `HDT_Reconnector.zip` | Кнопка reconnect для пропуска боя (нужен админ) |
+| **BgPickAdvisor** | `HDT_BgPickAdvisor.zip` | Подсказки на выборе героя/аксессуара по мете с **BgMetaApi** |
 | **BgMetaApi** | Docker / `dotnet run` | Сервер загрузки `heroes.json` / `trinkets.json` + админка |
+
+> В релизах — **ZIP-архивы** (браузеры ругаются на голые `.dll`). Распакуй и скопируй DLL в папку плагинов HDT.
+
+**BgReplay** — в разработке, в релизы пока не входит (сборка из исходников).
 
 ---
 
@@ -24,8 +28,8 @@
 
 ### Установка
 
-1. Скачай `HDT_Reconnector.dll` из [последнего релиза](https://github.com/qxplays/HDT_Reconnector/releases).
-2. Положи файл в папку плагинов HDT:  
+1. Скачай `HDT_Reconnector.zip` из [последнего релиза](https://github.com/qxplays/HDT_Reconnector/releases) и распакуй.
+2. Положи `HDT_Reconnector.dll` в папку плагинов HDT:  
    `%AppData%\HearthstoneDeckTracker\Plugins\`  
    (в HDT: **Options → Tracker → Plugins → Plugins folder**).
 3. Перезапусти HDT **от администратора**.
@@ -55,8 +59,8 @@
 
 ### Установка
 
-1. Скачай `HDT_BgPickAdvisor.dll` из [последнего релиза](https://github.com/qxplays/HDT_Reconnector/releases).
-2. Положи в `%AppData%\HearthstoneDeckTracker\Plugins\`.
+1. Скачай `HDT_BgPickAdvisor.zip` из [последнего релиза](https://github.com/qxplays/HDT_Reconnector/releases) и распакуй.
+2. Положи `HDT_BgPickAdvisor.dll` в `%AppData%\HearthstoneDeckTracker\Plugins\`.
 3. Перезапусти HDT.
 4. Включи **BgPickAdvisor** в **Options → Tracker → Plugins**.
 5. В меню **Plugins** включи **BG Pick Advisor**.
@@ -100,6 +104,24 @@ dotnet msbuild HDT_Reconnector.sln /p:Configuration=Release
 ```
 
 Результат: `HDT_Reconnector\bin\Release\HDT_Reconnector.dll` и `HDT_BgPickAdvisor\bin\Release\HDT_BgPickAdvisor.dll`.
+
+### BgReplay (в разработке, не в релизе)
+
+Парсер **не использует** `Core.Game` HDT — читает логи Blizzard (`Power.log` и др.). Собирается из репозитория, в GitHub Releases пока не выкладывается.
+
+**Где кнопка:** не в клиенте HS, а в **HDT**:
+1. **Options → Tracker → Plugins** — включи **BgReplay** (галочка Enable).
+2. Меню HDT **Plugins → BG Log Replay** (вкл. оверлей).
+3. На **оверлее HDT** слева сверху (под меню) кнопка **BG Replay** — видна в меню BG и в матче.
+4. На карточке плагина кнопка **Open replay**.
+
+Установка: `HDT_BgReplay.dll` + `BgPowerLog.dll` в папку плагинов.
+
+В окне: укажи **Logs folder** (по умолчанию `C:\Program Files (x86)\Hearthstone\Logs`) → **Apply folder** → **Refresh logs** → выбери `Power.log` или **`Power_old.log`** в подпапке `Hearthstone_2026_…` → **Parse full file** → **Match** → слайдер.
+
+Два места логов:
+- `%LocalAppData%\Blizzard\Hearthstone\Logs\` — текущая сессия
+- `C:\Program Files (x86)\Hearthstone\Logs\Hearthstone_YYYY_MM_DD_…\` — архив по запускам игры
 
 ### Тесты (без игры)
 

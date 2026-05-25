@@ -1,0 +1,21 @@
+BG Match Helper (HDT_Reconnector)
+=================================
+
+1. Unzip this archive.
+2. Copy HDT_Reconnector.dll to:
+   %AppData%\HearthstoneDeckTracker\Plugins\
+   (HDT: Options → Tracker → Plugins → Plugins folder)
+3. Restart Hearthstone Deck Tracker as Administrator.
+4. Enable BGMatchHelper in Options → Tracker → Plugins.
+5. Plugins menu → BG Match Helper.
+
+---
+BG Match Helper — установка
+===========================
+
+1. Распакуй архив.
+2. Скопируй HDT_Reconnector.dll в:
+   %AppData%\HearthstoneDeckTracker\Plugins\
+3. Перезапусти HDT от имени администратора.
+4. Включи BGMatchHelper в Options → Tracker → Plugins.
+5. Меню Plugins → BG Match Helper.

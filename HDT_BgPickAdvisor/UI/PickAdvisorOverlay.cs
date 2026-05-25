@@ -15,37 +15,31 @@ namespace HDT_BgPickAdvisor.UI
 {
     public sealed class PickAdvisorOverlay : UserControl, IDisposable
     {
-        private const double EdgeMargin = 12;
-        private const double CardWidth = 150;
-        private const double CardHeight = 96;
-
         private readonly BgHeroOfferDetector _heroDetector = new BgHeroOfferDetector();
         private readonly BgTrinketOfferDetector _trinketDetector = new BgTrinketOfferDetector();
-        private readonly StackPanel _root;
+        private readonly Canvas _canvas;
         private readonly SizeChangedEventHandler _sizeChangedHandler;
         private string _lastFingerprint = "";
+        private bool _heroPickLayout;
+        private int _slotCount;
 
         public PickAdvisorOverlay()
         {
-            _root = new StackPanel
-            {
-                Orientation = Orientation.Horizontal,
-                Background = new SolidColorBrush(Color.FromArgb(0xCC, 0x14, 0x16, 0x17))
-            };
-            Content = _root;
+            _canvas = new Canvas { Background = Brushes.Transparent, IsHitTestVisible = true };
+            Content = _canvas;
             Visibility = Visibility.Collapsed;
 
-            _sizeChangedHandler = (_, __) => UpdatePosition();
+            _sizeChangedHandler = (_, __) => ApplySlotLayout();
             Core.OverlayCanvas.SizeChanged += _sizeChangedHandler;
             OverlayRegistration.RegisterClickable(this);
-            UpdatePosition();
+            ApplySlotLayout();
         }
 
         public void Reset()
         {
             _lastFingerprint = "";
             Visibility = Visibility.Collapsed;
-            _root.Children.Clear();
+            _canvas.Children.Clear();
         }
 
         public void OnUpdate()
@@ -57,7 +51,7 @@ namespace HDT_BgPickAdvisor.UI
             {
                 _lastFingerprint = "";
                 Visibility = Visibility.Collapsed;
-                _root.Children.Clear();
+                _canvas.Children.Clear();
                 return;
             }
 
@@ -73,12 +67,12 @@ namespace HDT_BgPickAdvisor.UI
                 }
 
                 var fingerprint = BuildFingerprint("H", offers.Select(o => $"{o.DbfId}:{o.CardId}"));
-                if (fingerprint != _lastFingerprint || _root.Children.Count == 0)
+                if (fingerprint != _lastFingerprint || _canvas.Children.Count == 0)
                 {
                     _lastFingerprint = fingerprint;
                     FileLogger.Info($"Hero pick: {offers.Count} offers [{string.Join(", ", offers.Select(o => $"{o.Name}(dbf={o.DbfId})"))}]");
                     meta.RankHeroOffers(offers);
-                    RenderCards(offers.Select(ToCardModel).ToList(), "Hero pick");
+                    RenderOfferCards(offers.OrderBy(o => o.ZonePosition).Select(ToCardModel).ToList(), heroPick: true);
                 }
             }
             else
@@ -88,22 +82,22 @@ namespace HDT_BgPickAdvisor.UI
                 {
                     _lastFingerprint = "";
                     Visibility = Visibility.Collapsed;
-                    _root.Children.Clear();
+                    _canvas.Children.Clear();
                     return;
                 }
 
                 var fingerprint = BuildFingerprint("T", offers.Select(o => $"{o.DbfId}:{o.CardId}"));
-                if (fingerprint != _lastFingerprint || _root.Children.Count == 0)
+                if (fingerprint != _lastFingerprint || _canvas.Children.Count == 0)
                 {
                     _lastFingerprint = fingerprint;
                     FileLogger.Info($"Trinket pick: {offers.Count} offers [{string.Join(", ", offers.Select(o => $"{o.Name}(dbf={o.DbfId})"))}]");
                     meta.RankTrinketOffers(offers);
-                    RenderCards(offers.Select(ToCardModel).ToList(), "Accessory pick");
+                    RenderOfferCards(offers.OrderBy(o => o.ZonePosition).Select(ToCardModel).ToList(), heroPick: false);
                 }
             }
 
             Visibility = Visibility.Visible;
-            UpdatePosition();
+            ApplySlotLayout();
         }
 
         public void Dispose()
@@ -116,61 +110,73 @@ namespace HDT_BgPickAdvisor.UI
             prefix + string.Join("|", parts.OrderBy(p => p));
 
         private static CardViewModel ToCardModel(HeroOffer o) =>
-            new CardViewModel(o.Name, o.Meta?.Tier, o.Meta?.AvgPlacement, o.Meta?.PickRate, o.IsBestPick, o.Meta == null);
+            new CardViewModel(
+                o.Name,
+                ResolveTier(o.Meta?.Tier),
+                o.Meta?.AvgPlacement,
+                o.Meta?.PickRate,
+                o.IsBestPick,
+                o.Meta == null);
 
         private static CardViewModel ToCardModel(TrinketOffer o) =>
-            new CardViewModel(o.Name, o.Meta?.Tier, o.Meta?.AvgPlacement, o.Meta?.PickRate, o.IsBestPick, o.Meta == null);
+            new CardViewModel(
+                o.Name,
+                ResolveTier(o.Meta?.Tier),
+                o.Meta?.AvgPlacement,
+                o.Meta?.PickRate,
+                o.IsBestPick,
+                o.Meta == null);
 
-        private void RenderCards(IReadOnlyList<CardViewModel> cards, string title)
+        private static string ResolveTier(string tier) =>
+            string.IsNullOrWhiteSpace(tier) ? BgOfferLayout.DefaultTier : tier;
+
+        private void RenderOfferCards(IReadOnlyList<CardViewModel> cards, bool heroPick)
         {
-            _root.Children.Clear();
-
-            var header = new TextBlock
-            {
-                Text = title,
-                Foreground = Brushes.White,
-                FontWeight = FontWeights.Bold,
-                Margin = new Thickness(8, 6, 8, 4),
-                VerticalAlignment = VerticalAlignment.Center
-            };
-            _root.Children.Add(header);
+            _canvas.Children.Clear();
+            _heroPickLayout = heroPick;
+            _slotCount = cards.Count;
 
             foreach (var card in cards)
+                _canvas.Children.Add(CreateCardBorder(card));
+
+            ApplySlotLayout();
+        }
+
+        private static Border CreateCardBorder(CardViewModel card)
+        {
+            return new Border
             {
-                var border = new Border
-                {
-                    Width = CardWidth,
-                    Height = CardHeight,
-                    Margin = new Thickness(6),
-                    BorderThickness = new Thickness(card.IsBest ? 3 : 1),
-                    BorderBrush = card.IsBest
-                        ? new SolidColorBrush(Color.FromRgb(0x3d, 0xa9, 0x4a))
-                        : new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55)),
-                    Background = new SolidColorBrush(Color.FromRgb(0x23, 0x27, 0x2a)),
-                    Child = BuildCardContent(card)
-                };
-                _root.Children.Add(border);
-            }
+                BorderThickness = new Thickness(card.IsBest ? 3 : 1),
+                BorderBrush = card.IsBest
+                    ? new SolidColorBrush(Color.FromRgb(0x3d, 0xa9, 0x4a))
+                    : new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55)),
+                Background = new SolidColorBrush(Color.FromArgb(0xE8, 0x23, 0x27, 0x2a)),
+                Child = BuildCardContent(card),
+                SnapsToDevicePixels = true
+            };
         }
 
         private static UIElement BuildCardContent(CardViewModel card)
         {
-            var panel = new StackPanel { Margin = new Thickness(8) };
+            var panel = new StackPanel { Margin = new Thickness(6, 5, 6, 5) };
 
             panel.Children.Add(new TextBlock
             {
                 Text = card.Name ?? "?",
                 Foreground = Brushes.White,
                 FontWeight = FontWeights.SemiBold,
-                TextTrimming = TextTrimming.CharacterEllipsis
+                FontSize = 12,
+                TextTrimming = TextTrimming.CharacterEllipsis,
+                TextWrapping = TextWrapping.NoWrap
             });
 
             panel.Children.Add(new TextBlock
             {
                 Text = FormatTierLine(card),
                 Foreground = Brushes.LightGray,
-                FontSize = 12,
-                Margin = new Thickness(0, 4, 0, 0)
+                FontSize = 11,
+                Margin = new Thickness(0, 3, 0, 0),
+                TextWrapping = TextWrapping.Wrap
             });
 
             var pickRateText = FormatPickRateLine(card);
@@ -180,7 +186,7 @@ namespace HDT_BgPickAdvisor.UI
                 {
                     Text = pickRateText,
                     Foreground = new SolidColorBrush(Color.FromRgb(0xa8, 0xb0, 0xb8)),
-                    FontSize = 11,
+                    FontSize = 10,
                     Margin = new Thickness(0, 2, 0, 0)
                 });
             }
@@ -191,7 +197,8 @@ namespace HDT_BgPickAdvisor.UI
                 {
                     Text = "Best pick",
                     Foreground = new SolidColorBrush(Color.FromRgb(0x3d, 0xa9, 0x4a)),
-                    FontSize = 11,
+                    FontSize = 10,
+                    FontWeight = FontWeights.SemiBold,
                     Margin = new Thickness(0, 2, 0, 0)
                 });
             }
@@ -199,37 +206,57 @@ namespace HDT_BgPickAdvisor.UI
             return panel;
         }
 
-        private void UpdatePosition()
+        private void ApplySlotLayout()
         {
             var canvas = Core.OverlayCanvas;
             var width = canvas.ActualWidth > 0 ? canvas.ActualWidth : canvas.Width;
             var height = canvas.ActualHeight > 0 ? canvas.ActualHeight : canvas.Height;
-            if (width <= 0 || height <= 0)
+            if (width <= 0 || height <= 0 || _slotCount <= 0)
                 return;
 
-            var selfWidth = Math.Max(ActualWidth, _root.Children.Count * (CardWidth + 12) + 80);
-            Canvas.SetLeft(this, Math.Max(EdgeMargin, (width - selfWidth) / 2));
-            Canvas.SetTop(this, EdgeMargin + 40);
+            Width = width;
+            Height = height;
+            Canvas.SetLeft(this, 0);
+            Canvas.SetTop(this, 0);
+
+            for (var i = 0; i < _canvas.Children.Count; i++)
+            {
+                if (!(_canvas.Children[i] is FrameworkElement el))
+                    continue;
+
+                var slot = BgOfferLayout.GetSlotRect(i, _slotCount, _heroPickLayout, width, height);
+                el.Width = slot.Width;
+                el.Height = slot.Height;
+                Canvas.SetLeft(el, slot.Left);
+                Canvas.SetTop(el, slot.Top);
+            }
         }
 
         private static string FormatTierLine(CardViewModel card)
         {
-            var tierText = string.IsNullOrEmpty(card.Tier) ? "—" : card.Tier;
-            if (card.MissingMeta)
-                return $"Tier {tierText} · no meta";
+            var tierText = ResolveTier(card.Tier);
 
             if (card.AvgPlacement.HasValue)
                 return $"Tier {tierText} · {card.AvgPlacement:0.00} avg";
+
+            if (card.PickRate.HasValue)
+                return $"Tier {tierText} · Pick {card.PickRate:0.0}%";
+
+            if (card.MissingMeta)
+                return $"Tier {tierText}";
 
             return $"Tier {tierText}";
         }
 
         private static string FormatPickRateLine(CardViewModel card)
         {
-            if (card.MissingMeta || !card.PickRate.HasValue)
+            if (!card.PickRate.HasValue)
                 return null;
 
-            return $"Pick {card.PickRate:0.#}%";
+            if (card.AvgPlacement.HasValue)
+                return $"Pick {card.PickRate:0.#}%";
+
+            return null;
         }
 
         private sealed class CardViewModel

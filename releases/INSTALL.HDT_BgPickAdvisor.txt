@@ -1,0 +1,26 @@
+BG Pick Advisor (HDT_BgPickAdvisor)
+===================================
+
+1. Unzip this archive.
+2. Copy HDT_BgPickAdvisor.dll to:
+   %AppData%\HearthstoneDeckTracker\Plugins\
+3. Restart Hearthstone Deck Tracker.
+4. Enable BgPickAdvisor in Options → Tracker → Plugins.
+5. Plugins menu → BG Pick Advisor.
+
+Meta API (default): http://hsbg.qxplays.ru
+Optional: rename meta-api.url.example → meta-api.url next to the DLL.
+
+---
+BG Pick Advisor — установка
+===========================
+
+1. Распакуй архив.
+2. Скопируй HDT_BgPickAdvisor.dll в:
+   %AppData%\HearthstoneDeckTracker\Plugins\
+3. Перезапусти HDT.
+4. Включи BgPickAdvisor в Options → Tracker → Plugins.
+5. Меню Plugins → BG Pick Advisor.
+
+Мета по умолчанию: http://hsbg.qxplays.ru
+Опционально: meta-api.url.example → meta-api.url рядом с DLL.
