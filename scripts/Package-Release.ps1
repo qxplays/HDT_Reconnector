@@ -69,3 +69,9 @@ New-PluginZip -ZipName "HDT_BgPickAdvisor" -Files @(
 )
 
 Write-Host "Done. Release artifacts in $releasesDir"
+Write-Host ""
+Write-Host "Next (no CI required):"
+Write-Host "  git add releases/*.zip"
+Write-Host "  git commit -m ""Update release ZIPs"""
+Write-Host "  git tag vX.Y.Z && git push origin main && git push origin vX.Y.Z"
+Write-Host "Or download from: https://github.com/qxplays/HDT_Reconnector/raw/main/releases/<name>.zip"

@@ -28,7 +28,7 @@
 
 ### Установка
 
-1. Скачай `HDT_Reconnector.zip` из [последнего релиза](https://github.com/qxplays/HDT_Reconnector/releases) и распакуй.
+1. Скачай `HDT_Reconnector.zip` из [релиза](https://github.com/qxplays/HDT_Reconnector/releases) или [прямой ссылки](https://github.com/qxplays/HDT_Reconnector/raw/main/releases/HDT_Reconnector.zip) и распакуй.
 2. Положи `HDT_Reconnector.dll` в папку плагинов HDT:  
    `%AppData%\HearthstoneDeckTracker\Plugins\`  
    (в HDT: **Options → Tracker → Plugins → Plugins folder**).
@@ -59,7 +59,7 @@
 
 ### Установка
 
-1. Скачай `HDT_BgPickAdvisor.zip` из [последнего релиза](https://github.com/qxplays/HDT_Reconnector/releases) и распакуй.
+1. Скачай `HDT_BgPickAdvisor.zip` из [релиза](https://github.com/qxplays/HDT_Reconnector/releases) или [прямой ссылки](https://github.com/qxplays/HDT_Reconnector/raw/main/releases/HDT_BgPickAdvisor.zip) и распакуй.
 2. Положи `HDT_BgPickAdvisor.dll` в `%AppData%\HearthstoneDeckTracker\Plugins\`.
 3. Перезапусти HDT.
 4. Включи **BgPickAdvisor** в **Options → Tracker → Plugins**.

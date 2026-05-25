@@ -7,5 +7,7 @@ obj/
 hdtexe.path.txt
 *.dll
 releases/*
+!releases/*.zip
 !releases/meta-api.url.example
 !releases/INSTALL.*.txt
+!releases/README.md

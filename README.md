@@ -25,7 +25,7 @@ Reconnect button for **Battlegrounds** matches in [Hearthstone Deck Tracker](htt
 
 ### Install
 
-1. Download `HDT_Reconnector.zip` from the [latest release](https://github.com/qxplays/HDT_Reconnector/releases) and unzip it.
+1. Download `HDT_Reconnector.zip` from the [latest release](https://github.com/qxplays/HDT_Reconnector/releases) (or [direct link](https://github.com/qxplays/HDT_Reconnector/raw/main/releases/HDT_Reconnector.zip)) and unzip it.
 2. Copy `HDT_Reconnector.dll` to your HDT plugins folder:  
    `%AppData%\HearthstoneDeckTracker\Plugins\`  
    (in HDT: **Options → Tracker → Plugins → Plugins folder**).
@@ -56,7 +56,7 @@ Shows tier badges and highlights the best hero or trinket during Battlegrounds p
 
 ### Install
 
-1. Download `HDT_BgPickAdvisor.zip` from the [latest release](https://github.com/qxplays/HDT_Reconnector/releases) and unzip it.
+1. Download `HDT_BgPickAdvisor.zip` from the [latest release](https://github.com/qxplays/HDT_Reconnector/releases) (or [direct link](https://github.com/qxplays/HDT_Reconnector/raw/main/releases/HDT_BgPickAdvisor.zip)) and unzip it.
 2. Copy `HDT_BgPickAdvisor.dll` to `%AppData%\HearthstoneDeckTracker\Plugins\`.
 3. Restart HDT.
 4. Enable **BgPickAdvisor** under **Options → Tracker → Plugins**.

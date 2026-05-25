@@ -1,3 +1,5 @@
+# Optional: runs only if GitHub Actions is enabled on the repo.
+# Release files are committed under releases/ — see scripts/Package-Release.ps1
 name: Release
 
 on:
@@ -10,16 +12,9 @@ permissions:
 
 jobs:
   release:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v2
-
-      - name: Package plugin ZIPs
-        shell: pwsh
-        run: ./scripts/Package-Release.ps1
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
@@ -42,5 +37,7 @@ jobs:
             `meta-api.url.example` — optional API URL override (also inside BgPickAdvisor zip).
 
             > **BgReplay** is not included yet (work in progress).
+
+            No CI build — archives are committed in `releases/` on the tag.
 
           generate_release_notes: true
