@@ -67,8 +67,6 @@
         <Compile Include="Overlay\OverlayRegistration.cs"/>
         <Compile Include="Properties\AssemblyInfo.cs"/>
         <Compile Include="UI\DebugOffersWindow.cs"/>
-        <Compile Include="UI\BgOfferLayout.cs"/>
-
         <Compile Include="UI\PickAdvisorOverlay.cs"/>
         <Compile Include="Utils.cs"/>
     </ItemGroup>
