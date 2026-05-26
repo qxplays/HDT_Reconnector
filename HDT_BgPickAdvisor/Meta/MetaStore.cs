@@ -134,7 +134,7 @@ namespace HDT_BgPickAdvisor.Meta
                 if (offer.Meta == null && offer.Pool != TrinketPool.Greater)
                     offer.Meta = LookupTrinket(offer.DbfId, offer.CardId, TrinketPool.Greater);
 
-                if (offer.Meta?.Pool != TrinketPool.Unknown)
+                if (offer.Meta != null && offer.Meta.Pool != TrinketPool.Unknown)
                     offer.Pool = offer.Meta.Pool;
                 offer.IsBestPick = false;
             }
