@@ -22,18 +22,27 @@ namespace HDT_BgPickAdvisor.UI
 
         private readonly BgHeroOfferDetector _heroDetector = new BgHeroOfferDetector();
         private readonly BgTrinketOfferDetector _trinketDetector = new BgTrinketOfferDetector();
-        private readonly StackPanel _root;
+        private readonly StackPanel _shell;
+        private readonly StackPanel _cardsPanel;
+        private readonly Button _toggleButton;
         private readonly SizeChangedEventHandler _sizeChangedHandler;
         private string _lastFingerprint = "";
+        private bool _collapsed;
 
         public PickAdvisorOverlay()
         {
-            _root = new StackPanel
+            _cardsPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
                 Background = new SolidColorBrush(Color.FromArgb(0xCC, 0x14, 0x16, 0x17))
             };
-            Content = _root;
+
+            _toggleButton = CreateToggleButton();
+
+            _shell = new StackPanel { Orientation = Orientation.Horizontal };
+            _shell.Children.Add(_toggleButton);
+            _shell.Children.Add(_cardsPanel);
+            Content = _shell;
             Visibility = Visibility.Collapsed;
 
             _sizeChangedHandler = (_, __) => UpdatePosition();
@@ -45,8 +54,10 @@ namespace HDT_BgPickAdvisor.UI
         public void Reset()
         {
             _lastFingerprint = "";
+            _collapsed = false;
             Visibility = Visibility.Collapsed;
-            _root.Children.Clear();
+            _cardsPanel.Children.Clear();
+            ApplyCollapsedState();
         }
 
         public void OnUpdate()
@@ -58,7 +69,7 @@ namespace HDT_BgPickAdvisor.UI
             {
                 _lastFingerprint = "";
                 Visibility = Visibility.Collapsed;
-                _root.Children.Clear();
+                _cardsPanel.Children.Clear();
                 return;
             }
 
@@ -74,7 +85,7 @@ namespace HDT_BgPickAdvisor.UI
                 }
 
                 var fingerprint = BuildFingerprint("H", offers.Select(o => $"{o.DbfId}:{o.CardId}"));
-                if (fingerprint != _lastFingerprint || _root.Children.Count == 0)
+                if (fingerprint != _lastFingerprint || _cardsPanel.Children.Count == 0)
                 {
                     _lastFingerprint = fingerprint;
                     FileLogger.Info($"Hero pick: {offers.Count} offers [{string.Join(", ", offers.Select(o => $"{o.Name}(dbf={o.DbfId})"))}]");
@@ -90,12 +101,12 @@ namespace HDT_BgPickAdvisor.UI
                 {
                     _lastFingerprint = "";
                     Visibility = Visibility.Collapsed;
-                    _root.Children.Clear();
+                    _cardsPanel.Children.Clear();
                     return;
                 }
 
                 var fingerprint = BuildFingerprint("T", offers.Select(o => $"{o.DbfId}:{o.CardId}"));
-                if (fingerprint != _lastFingerprint || _root.Children.Count == 0)
+                if (fingerprint != _lastFingerprint || _cardsPanel.Children.Count == 0)
                 {
                     _lastFingerprint = fingerprint;
                     FileLogger.Info($"Trinket pick: {offers.Count} offers [{string.Join(", ", offers.Select(o => $"{o.Name}(dbf={o.DbfId})"))}]");
@@ -219,11 +230,47 @@ namespace HDT_BgPickAdvisor.UI
             return $"id={e.Id}, cardId='{e.CardId}', dbf={e.DbfId}, name='{e.Name}', zonePos={e.ZonePosition}, isHero={e.IsHero}, tags[{string.Join(",", tags)}]";
         }
 
+        private Button CreateToggleButton()
+        {
+            var btn = new Button
+            {
+                Width = 28,
+                Height = 36,
+                Margin = new Thickness(0, 0, 4, 0),
+                Padding = new Thickness(0),
+                VerticalAlignment = VerticalAlignment.Center,
+                FontSize = 14,
+                FontWeight = FontWeights.Bold,
+                Foreground = Brushes.White,
+                Background = new SolidColorBrush(Color.FromRgb(0x23, 0x27, 0x2a)),
+                BorderBrush = new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55)),
+                BorderThickness = new Thickness(1),
+                Cursor = System.Windows.Input.Cursors.Hand,
+                ToolTip = "Hide pick hints"
+            };
+
+            btn.Click += (_, __) =>
+            {
+                _collapsed = !_collapsed;
+                ApplyCollapsedState();
+                UpdatePosition();
+            };
+
+            return btn;
+        }
+
+        private void ApplyCollapsedState()
+        {
+            _cardsPanel.Visibility = _collapsed ? Visibility.Collapsed : Visibility.Visible;
+            _toggleButton.Content = _collapsed ? "+" : "−";
+            _toggleButton.ToolTip = _collapsed ? "Show pick hints" : "Hide pick hints";
+        }
+
         private void RenderCards(IReadOnlyList<CardViewModel> cards, string title)
         {
-            _root.Children.Clear();
+            _cardsPanel.Children.Clear();
 
-            _root.Children.Add(new TextBlock
+            _cardsPanel.Children.Add(new TextBlock
             {
                 Text = title,
                 Foreground = Brushes.White,
@@ -234,7 +281,7 @@ namespace HDT_BgPickAdvisor.UI
 
             foreach (var card in cards)
             {
-                _root.Children.Add(new Border
+                _cardsPanel.Children.Add(new Border
                 {
                     Width = CardWidth,
                     Height = CardHeight,
@@ -303,7 +350,10 @@ namespace HDT_BgPickAdvisor.UI
             if (width <= 0 || height <= 0)
                 return;
 
-            var selfWidth = Math.Max(ActualWidth, _root.Children.Count * (CardWidth + 12) + 80);
+            var toggleWidth = _toggleButton.Width + _toggleButton.Margin.Right;
+            var cardsWidth = _collapsed ? 0 : Math.Max(0, _cardsPanel.Children.Count * (CardWidth + 12) + 80);
+            var selfWidth = toggleWidth + cardsWidth;
+
             Canvas.SetLeft(this, Math.Max(EdgeMargin, (width - selfWidth) / 2));
             Canvas.SetTop(this, EdgeMargin + 40);
         }
