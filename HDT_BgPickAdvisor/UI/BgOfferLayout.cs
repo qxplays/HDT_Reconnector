@@ -3,19 +3,18 @@ using HDT_BgPickAdvisor.Meta;
 
 namespace HDT_BgPickAdvisor.UI
 {
-    /// <summary>Per-slot cards in upper area of overlay (original layout before portrait alignment).</summary>
+    /// <summary>Compact per-slot cards centered over BG pick rows (heroes low, trinkets mid).</summary>
     internal static class BgOfferLayout
     {
         public const string DefaultTier = MetaDefaults.DefaultTier;
 
-        // ~10–90% of screen width for 4 hero offers.
-        private const double HeroHalfSpan4 = 0.40;
-        private const double HeroHalfSpan3 = 0.32;
-        private const double HeroHalfSpan2 = 0.20;
+        private const double HeroHalfSpan4 = 0.205;
+        private const double HeroHalfSpan3 = 0.165;
+        private const double HeroHalfSpan2 = 0.105;
 
-        private const double TrinketHalfSpan4 = 0.35;
-        private const double TrinketHalfSpan3 = 0.28;
-        private const double TrinketHalfSpan2 = 0.14;
+        private const double TrinketHalfSpan4 = 0.200;
+        private const double TrinketHalfSpan3 = 0.160;
+        private const double TrinketHalfSpan2 = 0.100;
 
         public struct SlotRect
         {
@@ -108,36 +107,36 @@ namespace HDT_BgPickAdvisor.UI
             return result;
         }
 
-        /// <summary>Upper-mid screen (~48–50%), original overlay row.</summary>
+        /// <summary>Just above the 4 hero portraits (bottom-center row).</summary>
         private static double ResolveHeroTopRatio(double w, double h)
         {
             var aspect = w / Math.Max(h, 1);
-            var top = 0.485;
+            var top = 0.785;
 
             if (aspect >= 1.70)
-                top += 0.01;
+                top += 0.012;
             if (h >= 1200)
-                top += 0.01;
+                top += 0.015;
             if (h >= 1440)
-                top += 0.005;
+                top += 0.01;
 
-            return Clamp(top, 0.42, 0.55);
+            return Clamp(top, 0.75, 0.86);
         }
 
-        /// <summary>Upper-mid screen (~44–45%), above hero row.</summary>
+        /// <summary>Mid-lower row for trinket discover (above hero pick band).</summary>
         private static double ResolveTrinketTopRatio(double w, double h, int count)
         {
             var aspect = w / Math.Max(h, 1);
-            var top = count <= 2 ? 0.445 : 0.435;
+            var top = count <= 2 ? 0.618 : 0.608;
 
             if (aspect >= 1.70)
-                top += 0.008;
-            if (h >= 1200)
                 top += 0.01;
+            if (h >= 1200)
+                top += 0.015;
             if (h >= 1440)
-                top += 0.005;
+                top += 0.01;
 
-            return Clamp(top, 0.38, 0.52);
+            return Clamp(top, 0.59, 0.74);
         }
 
         private static double Clamp(double value, double min, double max) => Math.Max(min, Math.Min(max, value));
