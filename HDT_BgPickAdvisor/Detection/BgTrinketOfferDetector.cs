@@ -20,6 +20,61 @@ namespace HDT_BgPickAdvisor.Detection
             return ScanOffersRaw();
         }
 
+        public List<EntityDebugInfo> DumpCandidateEntities()
+        {
+            var list = new List<EntityDebugInfo>();
+            var game = Core.Game;
+            var player = game?.Player;
+            if (player == null)
+                return list;
+
+            // OfferedEntityIds: strongest signal for "currently shown" discover offers
+            var offeredIds = Utils.GetPropertyValue(player, "OfferedEntityIds") as IEnumerable;
+            var offeredIdSet = new HashSet<int>();
+            if (offeredIds != null)
+            {
+                foreach (var item in offeredIds)
+                {
+                    if (TryGetEntityId(item, out var entityId))
+                        offeredIdSet.Add(entityId);
+                }
+            }
+
+            var entities = Utils.GetPropertyValue(game, "Entities") as IDictionary;
+            if (entities != null && offeredIdSet.Count > 0)
+            {
+                foreach (var entityId in offeredIdSet)
+                {
+                    if (!TryResolveEntity(entities, entityId, out var entity))
+                        continue;
+
+                    if (!IsTrinketOfferEntity(entity))
+                        continue;
+
+                    list.Add(EntityReflection.ToDebugInfo(entity));
+                }
+            }
+
+            // Fallback: also dump any discover-zone trinkets from PlayerEntities
+            if (player.PlayerEntities != null)
+            {
+                foreach (var entity in player.PlayerEntities)
+                {
+                    if (!IsTrinketOfferEntity(entity))
+                        continue;
+                    if (!IsDiscoverZone(entity))
+                        continue;
+                    list.Add(EntityReflection.ToDebugInfo(entity));
+                }
+            }
+
+            return list
+                .GroupBy(x => x.Id > 0 ? x.Id : x.DbfId)
+                .Select(g => g.First())
+                .OrderBy(x => x.ZonePosition)
+                .ToList();
+        }
+
         internal static int CountVisibleOffers() => ScanOffersRaw().Count;
 
         internal static List<TrinketOffer> ScanOffersRaw()

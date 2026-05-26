@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using HearthDb;
 using HDT_BgPickAdvisor.Detection;
 using HDT_BgPickAdvisor.Logging;
 using HDT_BgPickAdvisor.Meta;
@@ -72,6 +73,7 @@ namespace HDT_BgPickAdvisor.UI
                     _lastFingerprint = fingerprint;
                     FileLogger.Info($"Hero pick: {offers.Count} offers [{string.Join(", ", offers.Select(o => $"{o.Name}(dbf={o.DbfId})"))}]");
                     meta.RankHeroOffers(offers);
+                    LogMissingHeroMetaIfAny(offers);
                     RenderOfferCards(offers.OrderBy(o => o.ZonePosition).Select(ToCardModel).ToList(), heroPick: true);
                 }
             }
@@ -92,6 +94,7 @@ namespace HDT_BgPickAdvisor.UI
                     _lastFingerprint = fingerprint;
                     FileLogger.Info($"Trinket pick: {offers.Count} offers [{string.Join(", ", offers.Select(o => $"{o.Name}(dbf={o.DbfId})"))}]");
                     meta.RankTrinketOffers(offers);
+                    LogMissingTrinketMetaIfAny(offers);
                     RenderOfferCards(offers.OrderBy(o => o.ZonePosition).Select(ToCardModel).ToList(), heroPick: false);
                 }
             }
@@ -129,6 +132,87 @@ namespace HDT_BgPickAdvisor.UI
 
         private static string ResolveTier(string tier) =>
             string.IsNullOrWhiteSpace(tier) ? BgOfferLayout.DefaultTier : tier;
+
+        private void LogMissingHeroMetaIfAny(IReadOnlyList<HeroOffer> offers)
+        {
+            var missing = offers.Where(o => o.Meta == null).ToList();
+            if (missing.Count == 0)
+                return;
+
+            var entityDump = _heroDetector.DumpPlayerHeroEntities();
+            FileLogger.Warn($"Hero meta missing for {missing.Count}/{offers.Count} offers. MetaHeroes={MetaService.Store.HeroCount}, api={MetaCatalog.ApiBaseUrl}");
+
+            foreach (var o in missing.OrderBy(x => x.ZonePosition))
+            {
+                var hsdb = TryDescribeHearthDbCard(o.CardId, o.DbfId);
+                FileLogger.Warn($"Hero meta missing: name='{o.Name}', cardId='{o.CardId}', metaDbf={o.DbfId}, zonePos={o.ZonePosition}, source={o.Source}{hsdb}");
+            }
+
+            if (entityDump.Count > 0)
+                FileLogger.Warn("Hero entity dump (HDT): " + string.Join(" | ", entityDump.Select(FormatEntityDebug)));
+        }
+
+        private void LogMissingTrinketMetaIfAny(IReadOnlyList<TrinketOffer> offers)
+        {
+            var missing = offers.Where(o => o.Meta == null).ToList();
+            if (missing.Count == 0)
+                return;
+
+            var entityDump = _trinketDetector.DumpCandidateEntities();
+            FileLogger.Warn($"Trinket meta missing for {missing.Count}/{offers.Count} offers. MetaLesser={MetaService.Store.TrinketLesserCount}, MetaGreater={MetaService.Store.TrinketGreaterCount}, api={MetaCatalog.ApiBaseUrl}");
+
+            foreach (var o in missing.OrderBy(x => x.ZonePosition))
+            {
+                var hsdb = TryDescribeHearthDbCard(o.CardId, o.DbfId);
+                FileLogger.Warn($"Trinket meta missing: name='{o.Name}', cardId='{o.CardId}', dbf={o.DbfId}, pool={o.Pool}, zonePos={o.ZonePosition}, source={o.Source}{hsdb}");
+            }
+
+            if (entityDump.Count > 0)
+                FileLogger.Warn("Trinket entity dump (HDT): " + string.Join(" | ", entityDump.Select(FormatEntityDebug)));
+        }
+
+        private static string TryDescribeHearthDbCard(string cardId, int fallbackDbfId)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(cardId) && Cards.All.TryGetValue(cardId, out var card))
+                    return $", hsdbName='{card.Name}', hsdbDbf={card.DbfId}, hsdbId='{card.Id}'";
+
+                if (fallbackDbfId > 0)
+                {
+                    var byDbf = Cards.All.Values.FirstOrDefault(c => c.DbfId == fallbackDbfId);
+                    if (byDbf != null)
+                        return $", hsdbName='{byDbf.Name}', hsdbDbf={byDbf.DbfId}, hsdbId='{byDbf.Id}'";
+                }
+            }
+            catch
+            {
+                // ignore HearthDb failures
+            }
+
+            return "";
+        }
+
+        private static string FormatEntityDebug(EntityDebugInfo e)
+        {
+            if (e == null)
+                return "?";
+
+            // Keep it dense: key fields + a few tags most useful for fixes.
+            string Tag(string k) => e.Tags != null && e.Tags.TryGetValue(k, out var v) ? $"{k}={v}" : null;
+
+            var tags = new[]
+            {
+                Tag("BACON_SKIN_PARENT_ID"),
+                Tag("BACON_SKIN"),
+                Tag("BACON_HERO_CAN_BE_DRAFTED"),
+                Tag("BACON_TRINKET"),
+                Tag("BACON_IS_MAGIC_ITEM_DISCOVER"),
+                Tag("BACON_LOCKED_MULLIGAN_HERO"),
+            }.Where(x => !string.IsNullOrEmpty(x));
+
+            return $"id={e.Id}, cardId='{e.CardId}', dbf={e.DbfId}, name='{e.Name}', zonePos={e.ZonePosition}, isHero={e.IsHero}, tags[{string.Join(",", tags)}]";
+        }
 
         private void RenderOfferCards(IReadOnlyList<CardViewModel> cards, bool heroPick)
         {
