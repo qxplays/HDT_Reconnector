@@ -19,6 +19,9 @@ namespace HDT_BgPickAdvisor.UI
         private const double EdgeMargin = 12;
         private const double CardWidth = 150;
         private const double CardHeight = 96;
+        private const string IconView = "\uE890";
+
+        private static readonly FontFamily IconFont = new FontFamily("Segoe MDL2 Assets");
 
         private readonly BgHeroOfferDetector _heroDetector = new BgHeroOfferDetector();
         private readonly BgTrinketOfferDetector _trinketDetector = new BgTrinketOfferDetector();
@@ -28,6 +31,7 @@ namespace HDT_BgPickAdvisor.UI
         private readonly SizeChangedEventHandler _sizeChangedHandler;
         private string _lastFingerprint = "";
         private bool _collapsed;
+        private double _anchorLeft = double.NaN;
 
         public PickAdvisorOverlay()
         {
@@ -55,6 +59,7 @@ namespace HDT_BgPickAdvisor.UI
         {
             _lastFingerprint = "";
             _collapsed = false;
+            _anchorLeft = double.NaN;
             Visibility = Visibility.Collapsed;
             _cardsPanel.Children.Clear();
             ApplyCollapsedState();
@@ -234,19 +239,14 @@ namespace HDT_BgPickAdvisor.UI
         {
             var btn = new Button
             {
-                Width = 28,
-                Height = 36,
-                Margin = new Thickness(0, 0, 4, 0),
+                Width = 36,
+                Height = 40,
+                Margin = new Thickness(0, 0, 6, 0),
                 Padding = new Thickness(0),
                 VerticalAlignment = VerticalAlignment.Center,
-                FontSize = 14,
-                FontWeight = FontWeights.Bold,
-                Foreground = Brushes.White,
-                Background = new SolidColorBrush(Color.FromRgb(0x23, 0x27, 0x2a)),
-                BorderBrush = new SolidColorBrush(Color.FromRgb(0x55, 0x55, 0x55)),
-                BorderThickness = new Thickness(1),
-                Cursor = System.Windows.Input.Cursors.Hand,
-                ToolTip = "Hide pick hints"
+                Background = new SolidColorBrush(Color.FromRgb(0x10, 0x12, 0x14)),
+                BorderThickness = new Thickness(2),
+                Cursor = System.Windows.Input.Cursors.Hand
             };
 
             btn.Click += (_, __) =>
@@ -256,14 +256,63 @@ namespace HDT_BgPickAdvisor.UI
                 UpdatePosition();
             };
 
+            ApplyCollapsedState(btn);
             return btn;
         }
 
         private void ApplyCollapsedState()
         {
+            ApplyCollapsedState(_toggleButton);
             _cardsPanel.Visibility = _collapsed ? Visibility.Collapsed : Visibility.Visible;
-            _toggleButton.Content = _collapsed ? "+" : "−";
-            _toggleButton.ToolTip = _collapsed ? "Show pick hints" : "Hide pick hints";
+        }
+
+        private void ApplyCollapsedState(Button btn)
+        {
+            var showPanel = _collapsed;
+            btn.Content = showPanel ? CreateEyeIcon() : CreateEyeSlashIcon();
+            btn.ToolTip = showPanel ? "Показать подсказки" : "Скрыть подсказки";
+            btn.BorderBrush = showPanel
+                ? new SolidColorBrush(Color.FromRgb(0x5c, 0xd6, 0x6a))
+                : new SolidColorBrush(Color.FromRgb(0xf2, 0xb9, 0x40));
+        }
+
+        private static UIElement CreateEyeIcon() =>
+            new TextBlock
+            {
+                Text = IconView,
+                FontFamily = IconFont,
+                FontSize = 18,
+                Foreground = Brushes.White,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+        private static UIElement CreateEyeSlashIcon()
+        {
+            var grid = new Grid { Width = 22, Height = 22 };
+
+            grid.Children.Add(new TextBlock
+            {
+                Text = IconView,
+                FontFamily = IconFont,
+                FontSize = 18,
+                Foreground = Brushes.White,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            });
+
+            grid.Children.Add(new Border
+            {
+                Width = 24,
+                Height = 3,
+                Background = new SolidColorBrush(Color.FromRgb(0xff, 0x66, 0x55)),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                RenderTransform = new RotateTransform(-32),
+                RenderTransformOrigin = new Point(0.5, 0.5)
+            });
+
+            return grid;
         }
 
         private void RenderCards(IReadOnlyList<CardViewModel> cards, string title)
@@ -350,11 +399,17 @@ namespace HDT_BgPickAdvisor.UI
             if (width <= 0 || height <= 0)
                 return;
 
-            var toggleWidth = _toggleButton.Width + _toggleButton.Margin.Right;
+            var toggleWidth = (_toggleButton.ActualWidth > 0 ? _toggleButton.ActualWidth : _toggleButton.Width)
+                              + _toggleButton.Margin.Right;
             var cardsWidth = _collapsed ? 0 : Math.Max(0, _cardsPanel.Children.Count * (CardWidth + 12) + 80);
             var selfWidth = toggleWidth + cardsWidth;
 
-            Canvas.SetLeft(this, Math.Max(EdgeMargin, (width - selfWidth) / 2));
+            if (!_collapsed)
+                _anchorLeft = Math.Max(EdgeMargin, (width - selfWidth) / 2);
+            else if (double.IsNaN(_anchorLeft))
+                _anchorLeft = Math.Max(EdgeMargin, (width - toggleWidth) / 2);
+
+            Canvas.SetLeft(this, _anchorLeft);
             Canvas.SetTop(this, EdgeMargin + 40);
         }
 
