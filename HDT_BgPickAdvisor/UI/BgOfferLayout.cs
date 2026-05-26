@@ -3,7 +3,7 @@ using HDT_BgPickAdvisor.Meta;
 
 namespace HDT_BgPickAdvisor.UI
 {
-    /// <summary>Compact per-slot cards centered over BG pick rows (heroes low, trinkets mid).</summary>
+    /// <summary>Compact row in the upper overlay band (not bottom hero portraits).</summary>
     internal static class BgOfferLayout
     {
         public const string DefaultTier = MetaDefaults.DefaultTier;
@@ -107,36 +107,36 @@ namespace HDT_BgPickAdvisor.UI
             return result;
         }
 
-        /// <summary>Just above the 4 hero portraits (bottom-center row).</summary>
+        /// <summary>Upper overlay row (~48% from top), original hero-pick band.</summary>
         private static double ResolveHeroTopRatio(double w, double h)
         {
             var aspect = w / Math.Max(h, 1);
-            var top = 0.785;
+            var top = 0.485;
 
             if (aspect >= 1.70)
-                top += 0.012;
-            if (h >= 1200)
-                top += 0.015;
-            if (h >= 1440)
                 top += 0.01;
+            if (h >= 1200)
+                top += 0.01;
+            if (h >= 1440)
+                top += 0.005;
 
-            return Clamp(top, 0.75, 0.86);
+            return Clamp(top, 0.42, 0.55);
         }
 
-        /// <summary>Mid-lower row for trinket discover (above hero pick band).</summary>
+        /// <summary>Slightly above hero row (~44%), trinket discover band.</summary>
         private static double ResolveTrinketTopRatio(double w, double h, int count)
         {
             var aspect = w / Math.Max(h, 1);
-            var top = count <= 2 ? 0.618 : 0.608;
+            var top = count <= 2 ? 0.445 : 0.435;
 
             if (aspect >= 1.70)
-                top += 0.01;
+                top += 0.008;
             if (h >= 1200)
-                top += 0.015;
-            if (h >= 1440)
                 top += 0.01;
+            if (h >= 1440)
+                top += 0.005;
 
-            return Clamp(top, 0.59, 0.74);
+            return Clamp(top, 0.38, 0.52);
         }
 
         private static double Clamp(double value, double min, double max) => Math.Max(min, Math.Min(max, value));
