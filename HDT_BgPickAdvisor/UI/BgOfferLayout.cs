@@ -3,7 +3,7 @@ using HDT_BgPickAdvisor.Meta;
 
 namespace HDT_BgPickAdvisor.UI
 {
-    /// <summary>Compact row in the upper overlay band (not bottom hero portraits).</summary>
+    /// <summary>Per-slot hint cards; top edge ~15% below screen top.</summary>
     internal static class BgOfferLayout
     {
         public const string DefaultTier = MetaDefaults.DefaultTier;
@@ -107,36 +107,32 @@ namespace HDT_BgPickAdvisor.UI
             return result;
         }
 
-        /// <summary>Upper overlay row (~48% from top), original hero-pick band.</summary>
+        /// <summary>~15% from top of overlay (where hint cards start).</summary>
         private static double ResolveHeroTopRatio(double w, double h)
         {
             var aspect = w / Math.Max(h, 1);
-            var top = 0.485;
+            var top = 0.15;
 
             if (aspect >= 1.70)
-                top += 0.01;
-            if (h >= 1200)
-                top += 0.01;
-            if (h >= 1440)
                 top += 0.005;
+            if (h >= 1440)
+                top += 0.01;
 
-            return Clamp(top, 0.42, 0.55);
+            return Clamp(top, 0.12, 0.22);
         }
 
-        /// <summary>Slightly above hero row (~44%), trinket discover band.</summary>
         private static double ResolveTrinketTopRatio(double w, double h, int count)
         {
+            _ = count;
             var aspect = w / Math.Max(h, 1);
-            var top = count <= 2 ? 0.445 : 0.435;
+            var top = 0.15;
 
             if (aspect >= 1.70)
-                top += 0.008;
-            if (h >= 1200)
-                top += 0.01;
-            if (h >= 1440)
                 top += 0.005;
+            if (h >= 1440)
+                top += 0.01;
 
-            return Clamp(top, 0.38, 0.52);
+            return Clamp(top, 0.12, 0.22);
         }
 
         private static double Clamp(double value, double min, double max) => Math.Max(min, Math.Min(max, value));
