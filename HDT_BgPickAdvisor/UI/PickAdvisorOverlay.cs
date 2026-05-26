@@ -19,6 +19,7 @@ namespace HDT_BgPickAdvisor.UI
         private const double EdgeMargin = 12;
         private const double CardWidth = 150;
         private const double CardHeight = 96;
+        private const double StripHeight = CardHeight + 12;
         private const string IconView = "\uE890";
 
         private static readonly FontFamily IconFont = new FontFamily("Segoe MDL2 Assets");
@@ -38,12 +39,18 @@ namespace HDT_BgPickAdvisor.UI
             _cardsPanel = new StackPanel
             {
                 Orientation = Orientation.Horizontal,
+                VerticalAlignment = VerticalAlignment.Top,
                 Background = new SolidColorBrush(Color.FromArgb(0xCC, 0x14, 0x16, 0x17))
             };
 
             _toggleButton = CreateToggleButton();
 
-            _shell = new StackPanel { Orientation = Orientation.Horizontal };
+            _shell = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                MinHeight = StripHeight,
+                VerticalAlignment = VerticalAlignment.Top
+            };
             _shell.Children.Add(_toggleButton);
             _shell.Children.Add(_cardsPanel);
             Content = _shell;
@@ -241,9 +248,9 @@ namespace HDT_BgPickAdvisor.UI
             {
                 Width = 36,
                 Height = 40,
-                Margin = new Thickness(0, 0, 6, 0),
+                Margin = new Thickness(0, 4, 6, 0),
                 Padding = new Thickness(0),
-                VerticalAlignment = VerticalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Top,
                 Background = new SolidColorBrush(Color.FromRgb(0x10, 0x12, 0x14)),
                 BorderThickness = new Thickness(2),
                 Cursor = System.Windows.Input.Cursors.Hand
@@ -272,12 +279,14 @@ namespace HDT_BgPickAdvisor.UI
             btn.Content = showPanel ? CreateEyeIcon() : CreateEyeSlashIcon();
             btn.ToolTip = showPanel ? "Показать подсказки" : "Скрыть подсказки";
             btn.BorderBrush = showPanel
-                ? new SolidColorBrush(Color.FromRgb(0x5c, 0xd6, 0x6a))
-                : new SolidColorBrush(Color.FromRgb(0xf2, 0xb9, 0x40));
+                ? new SolidColorBrush(Color.FromRgb(0xf2, 0xb9, 0x40))
+                : new SolidColorBrush(Color.FromRgb(0x5c, 0xd6, 0x6a));
         }
 
-        private static UIElement CreateEyeIcon() =>
-            new TextBlock
+        private static UIElement CreateEyeIcon()
+        {
+            var grid = new Grid { Width = 22, Height = 22 };
+            grid.Children.Add(new TextBlock
             {
                 Text = IconView,
                 FontFamily = IconFont,
@@ -285,7 +294,9 @@ namespace HDT_BgPickAdvisor.UI
                 Foreground = Brushes.White,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
-            };
+            });
+            return grid;
+        }
 
         private static UIElement CreateEyeSlashIcon()
         {
@@ -411,6 +422,7 @@ namespace HDT_BgPickAdvisor.UI
 
             Canvas.SetLeft(this, _anchorLeft);
             Canvas.SetTop(this, EdgeMargin + 40);
+            Height = StripHeight;
         }
 
         private static string FormatTierLine(CardViewModel card)
